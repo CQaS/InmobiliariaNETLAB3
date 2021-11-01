@@ -1,0 +1,120 @@
+﻿@model Inmobiliaria_NetApi.Models.Propietario
+
+@{
+    ViewData["Title"] = "Detalles de Propietario";
+    List<Inmueble> inmuebles = ViewData[nameof(Inmueble)] as List<Inmueble>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+else
+{
+
+<h1>Datalles del Propietario: @Model.Nombre</h1>
+<br><br>
+
+<div class="container">
+    <div>
+       <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dni)
+            </th>
+            <th>
+                Telefono
+            </th>
+            <th>
+                Nro. Cliente
+            </th>
+            <th>
+                E-mail
+            </th>          
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Nombre
+            </td>
+            <td>
+                @Model.Direccion
+            </td>
+            <td>
+                @Model.Dni
+            </td>
+            <td>
+                @Model.Tel
+            </td>
+            <td>
+                @Model.Id
+            </td>
+            <td>
+                @Model.Email
+            </td>
+            <td>
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=Model.Id}) |
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Eliminar", "Delete", new { id=Model.Id}, new { onclick = "return confirm('Borrar al Propietario: " + @Model.Nombre + "?')" })
+            </td>
+        </tr>
+    </tbody>
+    </table>
+
+<h1>Inmuebles del Propietario</h1>
+
+<table class="table" style="margin-bottom:45px">
+    <thead class="thead-dark">
+        <tr align="center">
+            <th>
+                Direccion
+            </th>
+            <th>
+                Fotos
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in inmuebles) 
+{
+        <tr align="center">
+            <td>
+                <h2>
+                    @Html.DisplayFor(modelItem => item.Direccion_in) |
+                </h2>
+                <h4>
+                    <i class="fa fa-info-circle"></i>
+                    @Html.ActionLink("Detalles", "Detalles", "Inmueble", new { id=item.Id_inmu})
+                </h4>
+            </td>
+            <td>
+                @if (item.foto != "")
+                {
+                    <img src="@item.foto" height="100" width="100" style="border-radius: 40px; margin: 20px 0 0 10px;border: 2px solid #fff;"/> 
+                }
+                else
+                {
+                    <p>Sin Foto</p>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+     
+    </div>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+}

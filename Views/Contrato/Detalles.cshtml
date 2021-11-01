@@ -1,0 +1,85 @@
+﻿@model Inmobiliaria_NetApi.Models.Contrato
+
+@{
+    ViewData["Title"] = "Detalles del Contrato";
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Datalles del Contrato del Inmueble</h1>
+
+<div class="container">
+    <div>
+       <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fe_ini)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fe_fin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.monto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inquilino.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inmueble.Direccion_in)
+            </th>          
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Id
+            </td>
+            <td>
+                @Model.fe_ini
+            </td>
+            <td>
+                @Model.fe_fin
+            </td>
+            <td>
+                U$D @Model.monto
+            </td>
+            <td>
+                @ViewBag.Inquilino.Nombre
+            </td>
+            <td>
+                @ViewBag.Inmueble.Direccion_in
+            </td>
+            <td>
+                <i class="fa fa-history"></i>
+                @Html.ActionLink("Ver pagos", "PorContrato", "Pago", new { id=Model.Id}) |
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=Model.Id}) |
+                @if(ViewContext.HttpContext.User.IsInRole("Administrador"))
+                {
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Cancelar", "Delete", new { id=Model.Id}, new { onclick = "return confirm('Cancelar el Contrato de Nro: " + @ViewBag.Inquilino.Nombre + "?')" })
+                }
+            </td>
+        </tr>
+    </tbody>
+    </table> 
+    </div>
+    <br>
+    <div><big><big>
+        <i class="fa fa-usd"></i>
+        @Html.ActionLink("Pagar", "Pagar", "Pago",new { id=Model.Id})
+        </big></big>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+ }

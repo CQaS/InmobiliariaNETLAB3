@@ -1,0 +1,71 @@
+﻿@model Inmobiliaria_NetApi.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Editar";
+    int id = Model.Id_inmu;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Editar el Inmueble del Sr/a: 
+    @foreach (var item in (IList<Propietario>)ViewBag.Propietario)
+    {
+        if(item.Id == Model.id_propietario){ @Html.DisplayFor(modelItem => item.Nombre) }
+    }
+</h1>
+
+<div class="container">
+    <div>
+        <form method="post" asp-action="Editar" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id_inmu" />
+            <div class="form-group">
+                <label for="direccion" class="control-label">Direccion</label>
+                <input type="text" class="form-control" id="direccion" name="Direccion_in" value="@Model.Direccion_in">
+            </div>
+            <div class="form-group">
+                <label for="uso" class="control-label">Uso</label>
+                <input type="text" class="form-control" id="uso" name="uso" value="@Model.Uso">
+            </div>
+            <div class="form-group">
+                <label for="tipo" class="control-label">Tipo</label>
+                <input type="text" class="form-control" id="tipo" name="tipo" value="@Model.Tipo">
+            </div>
+            <div class="form-group">
+                <label for="ambientes" class="control-label">Ambientes</label>
+                <input type="text" class="form-control" id="ambientes" name="ambientes" value="@Model.ambientes">
+            </div>
+            <div class="form-group">
+                <label for="precio" class="control-label">Precio</label>
+                <input type="text" class="form-control" id="precio" name="precio" value="@Model.precio">
+            </div>
+            <div>
+                <label class="control-label">Propietario</label>
+                <select class="form-control" name="idPro">
+                    @foreach (var item in (IList<Propietario>)ViewBag.Propietario)
+                    {
+                        @:<option @(item.Id == Model.id_propietario ? "Selected" : "") value="@item.Id">@(item.Nombre)</option>
+                    }
+                </select>
+                <span asp-validation-for="id_propietario" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label asp-for="FotoFile" class="control-label"></label>
+                <input type="file" name="FotoFile" />
+                <span asp-validation-for="FotoFile" class="text-danger"></span>
+            </div>
+            <br>
+            <input type="submit" value="Confirmar" />
+        </form>
+    </div>
+    <br>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+ }

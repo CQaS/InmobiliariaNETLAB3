@@ -1,0 +1,58 @@
+﻿@model Inmobiliaria_NetApi.Models.Propietario
+
+@{
+    ViewData["Title"] = "Editar";
+    int id = Model.Id;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+else
+{
+
+<h1>Editar el Propietario: @Model.Nombre</h1>
+
+<div class="container">
+    <div>
+        <form method="post" asp-action="Editar"  enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label for="dni_id" class="control-label">DNI</label>
+                <input type="text" class="form-control" id="dni_id" name="dni" value="@Model.Dni">
+            </div>
+            <div class="form-group">
+                <label for="name_id" class="control-label">Nombre</label>
+                <input type="text" class="form-control" id="name_id" name="nombre" value="@Model.Nombre">
+            </div>
+            <div class="form-group">
+                <label for="dire" class="control-label">Direccion</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" value="@Model.Direccion">
+            </div>
+            <div class="form-group">
+                <label for="dire" class="control-label">Telefono</label>
+                <input type="text" class="form-control" id="tel" name="tel" value="@Model.Tel">
+            </div>
+            <div class="form-group">
+                <label for="dire" class="control-label">E-mail</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Correo electronico">
+            </div>
+            <div class="form-group">
+                <label for="dire" class="control-label">Clave</label>
+                <input type="password" class="form-control" id="Clave" name="Clave" placeholder="*********">
+            </div>
+            <div class="form-group">
+                <label asp-for="AvatarFile" class="control-label"></label>
+                <input type="file" name="AvatarFile" />
+                <span asp-validation-for="AvatarFile" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Confirmar" />
+        </form>
+    </div>
+    <br>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+}

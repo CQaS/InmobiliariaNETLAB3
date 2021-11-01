@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Inmobiliaria_NetApi.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "Index Inmuebles";
+    List<Inmueble> inmuebles = ViewData[nameof(Inmueble)] as List<Inmueble>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h5>Buscar Inmuebles por fecha:</h5>
+<br>
+<form method="post" asp-action="BuscarPorFecha" class="form-inline">
+    <div class="form-group">
+        <label for="FechaInicio">Fecha desde:</label>
+        <input type="date" class="form-control" id="desde" name="FechaInicio">
+    </div>
+    &nbsp;
+    <div class="form-group">
+        <label for="FechaFin"> Fecha hasta:</label>
+        <input type="date" class="form-control" id="hasta" name="FechaFin">
+    </div>
+    &nbsp;
+    <button type="submit" class="btn btn-danger">Ver disponibles</button>       
+    
+</form>
+<br>
+
+<h1>@ViewBag.listaInmu</h1>
+
+<h1>@ViewBag.listaPorFecha</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                <h5>
+                    @Html.DisplayNameFor(model => model.Direccion_in)
+                </h5>
+            </th>
+            <th>
+                <h5>
+                    @Html.DisplayNameFor(model => model.precio)
+                </h5>
+            </th> 
+            <th>
+                <h5>
+                    Propietario del Inmueble
+                </h5>
+            </th>         
+            <th class="text-center">
+                @if(String.IsNullOrEmpty(ViewBag.listaPorFecha))
+                { 
+                    <a asp-action="Alta" class="btn btn-primary"> Crear Inmuebles</a>
+                }
+                @if(!String.IsNullOrEmpty(ViewBag.listaPorFecha))
+                { 
+                    <a asp-action="Alta" asp-controller="Contrato" class="btn btn-primary"> Contratar</a>
+                }
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in inmuebles) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion_in)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duenio.Nombre)
+            </td>
+            <td>
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=item.Id_inmu}) |
+                <i class="fa fa-info-circle"></i>
+                @Html.ActionLink("Detalles", "Detalles", new { id=item.Id_inmu}) |
+                <i class="fa fa-book"></i>
+                @Html.ActionLink("VerContratos", "VerContratos", new { id=item.Id_inmu}) |
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id_inmu}, new { onclick = "return confirm('Borrar el Inmueble de: " + @item.Duenio.Nombre + "?')" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    @if(String.IsNullOrEmpty(ViewBag.listaPorFecha))
+    {
+        <p>
+            <a asp-action="Alta" class="btn btn-primary">Crear Inmuebles</a>
+        </p>
+    }
+ }

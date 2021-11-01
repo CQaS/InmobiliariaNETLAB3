@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Inmobiliaria_NetApi.Models.Pago>
+
+@{
+    ViewData["Title"] = "Index Pagos";
+    List<Pago> pagos = ViewData[nameof(Pago)] as List<Pago>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Pagos de todos los Inmuebles.</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.inquilino.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.inmueble.Direccion_in)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Num_Pago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContratoId)
+            </th>
+
+            <th>
+                
+                    <a asp-action="Alta" class="btn btn-primary"> Abonar un Contrato</a>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in pagos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.inquilino.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.inmueble.Direccion_in)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Num_Pago)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Importe)
+                </td>
+                <td>
+                    <i class="fa fa-history"></i>
+                    @Html.ActionLink("Historial de Pagos del Contrato", "PorContrato", new { id=item.ContratoId}) Nro:  
+                    @Html.DisplayFor(modelItem => item.ContratoId)
+                </td>
+                <td>
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=item.Id}) |
+
+                @if(ViewContext.HttpContext.User.IsInRole("Administrador"))
+                {
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id}, new { onclick = "return confirm('Borrar el Pago?')" })
+                }
+                
+            </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Alta" class="btn btn-primary">Abonar un Contrato</a>
+</p>
+ }

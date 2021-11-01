@@ -1,0 +1,62 @@
+﻿@model Inmobiliaria_NetApi.Models.Contrato
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Editar Contratos</h1>
+
+<div class="container">
+    <div>
+        <form method="post" asp-action="Editar">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="fe_ini" class="control-label">Fecha Inicio</label>
+                <input asp-for="fe_ini" class="form-control" />
+                <span asp-validation-for="fe_ini" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fe_fin" class="control-label">Fecha Cierre</label>
+                <input asp-for="fe_fin" class="form-control" />
+                <span asp-validation-for="fe_fin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="monto" class="control-label">Monto</label>
+                <input type="text" class="form-control" id="monto" name="monto" value="@Model.monto">
+            </div>
+            <div>
+                <label class="control-label">Inmueble</label>
+                <select class="form-control" name="id_inmueble">
+                    @foreach (var item in (IList<Inmueble>)ViewBag.Inmueble)
+                    {
+                        @:<option @(item.Id_inmu == Model.id_inmueble ? "Selected" : "") value="@item.Id_inmu">@(item.Direccion_in)</option>
+                    }
+                </select>
+                <span asp-validation-for="id_inmueble" class="text-danger"></span>
+            </div>
+            <div>
+                <label class="control-label">Inquilino</label>
+                <select class="form-control" name="id_inquilino">
+                    @foreach (var item in (IList<Inquilino>)ViewBag.Inquilino)
+                    {
+                        @:<option @(item.Id == Model.id_inquilino ? "Selected" : "") value="@item.Id">@(item.Nombre)</option>
+                    }
+                </select>
+                <span asp-validation-for="id_inquilino" class="text-danger"></span>
+            </div><br>
+            <input type="submit" value="Confirmar" class="btn btn-primary" />
+        </form>
+    </div>
+    <br>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+ }

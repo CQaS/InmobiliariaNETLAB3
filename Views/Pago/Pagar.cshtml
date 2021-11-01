@@ -1,0 +1,40 @@
+﻿@model Inmobiliaria_NetApi.Models.Pago
+
+@{
+    ViewData["Title"] = "Pagar";
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Pagar Contrato</h1>
+
+<div class="container">
+    <div>
+        <form method="post" asp-action="Pagar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label for="Num_Pago" class="control-label">Nro. Pago siguiente:</label>
+                <input type="text" class="form-control" id="Num_Pago" name="Num_Pago"
+                value="@ViewBag.max" >
+            </div>
+            <div class="form-group">
+                <label for="Fecha" class="control-label">Fecha</label>
+                <input type="date" class="form-control" id="Fecha" name="Fecha">
+            </div>
+            <div class="form-group">
+                <label for="Importe" class="control-label">Monto</label>
+                <input type="text" class="form-control" id="importe" name="importe" value="@ViewBag.Contrato.monto" >
+            </div>
+            <br>
+            <input type="submit" value="Confirmar" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Volver</a>
+        </form>
+    </div>
+</div>
+ }

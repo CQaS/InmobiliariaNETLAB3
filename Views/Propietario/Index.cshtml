@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Inmobiliaria_NetApi.Models.Propietario>
+
+@{
+    ViewData["Title"] = "Index Propietarios";
+    List<Propietario> propietarios = ViewData[nameof(Propietario)] as List<Propietario>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+else
+{
+
+<h1>Nuestros Propietarios Actuales</h1>
+
+<table class="table" style="margin-bottom:45px">
+    <thead class="thead-dark">
+        <tr align="center">
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tel)
+            </th>
+            <th class="text-center">
+                
+                    <a asp-action="Alta" class="btn btn-primary"> Crear Propietario</a>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in propietarios) {
+        <tr align="center">
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tel)
+            </td>
+            <td>
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=item.Id}) |
+                <i class="fa fa-info-circle"></i>
+                @Html.ActionLink("Detalles", "Detalles", new { id=item.Id}) |
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id}, new { onclick = "return confirm('Borrar al Propietario: " + @item.Nombre + "?')" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Alta" class="btn btn-primary">Crear Propietario</a>
+</p>
+}

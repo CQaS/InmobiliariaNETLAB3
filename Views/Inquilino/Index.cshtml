@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Inmobiliaria_NetApi.Models.Inquilino>
+
+@{
+    ViewData["Title"] = "Index Inquilinos";
+    List<Inquilino> inquilinos = ViewData[nameof(Inquilino)] as List<Inquilino>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Nuestros Inquilinos Actuales</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>          
+            <th>
+                
+                <a asp-action="Alta" class="btn btn-primary"> Crear Inquilinos</a>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in inquilinos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                <i class="fa fa-edit"></i>
+                @Html.ActionLink("Editar", "Editar", new { id=item.Id}) |
+                <i class="fa fa-info-circle"></i>
+                @Html.ActionLink("Detalles", "Detalles", new { id=item.Id}) |
+                <i class="fa fa-trash"></i>
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.Id}, new { onclick = "return confirm('Borrar al Inquilino: " + @item.Nombre + "?')" })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Alta" class="btn btn-primary">Crear Inquilinos</a>
+</p>
+ }

@@ -1,0 +1,59 @@
+﻿@model Inmobiliaria_NetApi.Models.Contrato
+
+@{
+    ViewData["Title"] = "Altas";
+    List<Inmueble> inmuebles = ViewData[nameof(Inmueble)] as List<Inmueble>;
+    List<Inquilino> inquilino = ViewData[nameof(Inquilino)] as List<Inquilino>;
+}
+
+@if(!User.Identity.IsAuthenticated)
+ {
+     await Html.RenderPartialAsync("_Login", new LoginView());
+ }
+ else
+ {
+
+<h1>Altas de Contratos</h1>
+<br>
+
+<div class="container">
+    <div>
+        <form method="post" asp-action="Alta">
+            <div class="form-group">
+                <label for="fe_ini" class="control-label">Fecha inicio</label>
+                <input type="date" class="form-control" id="fe_ini" name="fe_ini">
+            </div>
+            <div class="form-group">
+                <label for="fe_fin" class="control-label">Fecha Fin</label>
+                <input type="date" class="form-control" id="fe_fin" name="fe_fin">
+            </div>
+            <div class="form-group">
+                <label for="monto" class="control-label">Monto</label>
+                <input type="text" class="form-control" id="monto" name="monto" placeholder="Monto del Alquiler">
+            </div>
+            <div>
+                <label for="id_inmueble" class="control-label">Inmueble</label>
+                <select class="form-control" name="id_inmueble">
+                    @foreach (var item in inmuebles) {
+
+                        <option value="@item.Id_inmu">@(item.Direccion_in)</option>                        
+                    }
+
+                </select>
+            </div>
+            <div>
+                <label for="id_inquilino" class="control-label">Inquilino</label>
+                <select class="form-control" name="id_inquilino">
+                    @foreach (var item in inquilino) {
+
+                        <option value="@item.Id">@(item.Nombre)</option>                        
+                    }
+
+                </select>
+            </div><br>
+            <input type="submit" value="Confirmar" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Volver</a>
+        </form>
+    </div>
+</div>
+ }
