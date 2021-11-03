@@ -40,19 +40,6 @@ namespace Inmobiliaria_NetApi.Controllers
             return View();
         }
 
-        /* GET:
-        [Authorize] 
-        public IActionResult Contratar(int id)
-        {
-            Inmueble i = repositorioInmueble.Buscar(id);
-            ViewData["unInmueble"] = i;
-            var lta = repositorioInmueble.obtener();
-            ViewData[nameof(Inmueble)] = lta;
-            var lta2 = repositorioInquilino.obtener();
-            ViewData[nameof(Inquilino)] = lta2;
-            return View(nameof(Alta));
-        }*/
-
         // GET:
         [Authorize] 
         public IActionResult Alta()

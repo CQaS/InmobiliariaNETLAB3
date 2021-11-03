@@ -95,7 +95,7 @@ namespace Inmobiliaria_NetApi.ApiController
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Inmueble entidad)
         {
-            //https://youtu.be/GeO8pHIHfu0
+            
             try
             {
                 var user = User.Identity.Name;
@@ -105,7 +105,6 @@ namespace Inmobiliaria_NetApi.ApiController
 
                 if (ModelState.IsValid && res != null)
                 {
-                    //res.Estado = !entidad.Estado;
                     entidad.Id_inmu = id;
                     _context.Inmueble.Update(entidad);
                    await _context.SaveChangesAsync();
